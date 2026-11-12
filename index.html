@@ -1981,7 +1981,7 @@ body.interactive .music-btn,body.interactive .lang-toggle{display:flex}
 /* Background music: YouTube player (loops the song); built-in melody as fallback. Starts on a guest gesture. */
 (function(){
  const btn=document.getElementById('musicBtn'),icon=document.getElementById('musicIcon');
- const VIDEO_ID='fIomCq3LTPo';
+ const VIDEO_ID='nA8E41JUQM0';
  const ICON_PLAY='<path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>';
  const ICON_PAUSE='<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
  function ui(on){btn.classList.toggle('playing',on);icon.innerHTML=on?ICON_PAUSE:ICON_PLAY;btn.setAttribute('aria-label',on?'Mute music':'Play music');btn.setAttribute('aria-pressed',String(on));}
@@ -2100,13 +2100,14 @@ body.interactive .music-btn,body.interactive .lang-toggle{display:flex}
 
  /* gold dust in hero */
  const hd=document.getElementById('heroDust');
- if(hd&&!reduce){for(let i=0;i<26;i++){const d=document.createElement('span');const z=rnd(1.5,3.5);
+ const MOB=window.innerWidth<600;
+ if(hd&&!reduce){for(let i=0;i<(MOB?44:26);i++){const d=document.createElement('span');const z=rnd(MOB?2.5:1.5,MOB?5:3.5);
    d.style.cssText=`left:${rnd(0,100)}%;top:${rnd(30,100)}%;width:${z}px;height:${z}px;--dx:${rnd(-30,30)}px;animation-duration:${rnd(6,11)}s;animation-delay:${rnd(-11,0)}s`;hd.appendChild(d);}}
 
  /* petal trail following the pointer / finger */
  if(!reduce){let last=0;
    const drop=(x,y)=>{const t=performance.now();if(t-last<55)return;last=t;
-     const p=document.createElement('div');p.className='trail-petal';
+     const p=document.createElement('div');p.className='trail-petal';if(window.innerWidth<600)p.style.transform='scale(1.5)';
      p.style.left=x+'px';p.style.top=y+'px';p.style.setProperty('--dx',rnd(-24,24)+'px');
      document.body.appendChild(p);setTimeout(()=>p.remove(),1150);};
    window.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'||e.pointerType==='touch')drop(e.clientX,e.clientY);},{passive:true});
@@ -2121,6 +2122,18 @@ body.interactive .music-btn,body.interactive .lang-toggle{display:flex}
      el.addEventListener('pointerleave',()=>{el.style.transform='';});
    });
  }
+})();
+</script>
+<script>
+/* mobile parallax: Ganesha and toran drift gently with scroll */
+(function(){
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const g=document.querySelector('.ganesha-wrap'),t=document.querySelector('.hero .toran');
+ let raf=0;
+ const upd=()=>{raf=0;const y=Math.min(window.scrollY,900);
+   if(g)g.style.transform=`translateY(${(y*0.18).toFixed(1)}px)`;
+   if(t)t.style.transform=`translateY(${(y*0.35).toFixed(1)}px)`;};
+ window.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(upd);},{passive:true});
 })();
 </script>
 </body>
