@@ -1370,6 +1370,57 @@ body.interactive .music-btn,body.interactive .lang-toggle{display:flex}
   .portrait-stage,.rs-frame{transition:transform .35s ease-out}
 }
 @media (prefers-reduced-motion:reduce){.env-frame{display:none}}
+
+/* ═════════ ENGLISH READABILITY + MOTION ═════════ */
+body[data-lang="en"] .verse{font-size:17px;font-weight:500;line-height:1.7;color:var(--ink)}
+body[data-lang="en"] .env-sub{font-size:11.5px;letter-spacing:.2em;font-weight:500}
+body[data-lang="en"] .env-hint{font-size:12px;letter-spacing:.22em;font-weight:500}
+body[data-lang="en"] .s-eyebrow{font-size:12px;letter-spacing:.2em;font-weight:500;color:var(--maroon-soft)}
+body[data-lang="en"] .subhalekha-line{font-size:12.5px;letter-spacing:.18em;font-weight:500;color:var(--ink)}
+body[data-lang="en"] .invocation-sub{font-size:16px;font-weight:500}
+body[data-lang="en"] .ss-cell .sml{font-size:11.5px;letter-spacing:.14em;font-weight:500}
+body[data-lang="en"] .ss-cell .big{font-weight:500}
+body[data-lang="en"] .fam-tag{font-size:11.5px;letter-spacing:.14em;font-weight:500}
+body[data-lang="en"] .fam-parent{font-size:19px;font-weight:600;line-height:1.25}
+body[data-lang="en"] .fam-rel{font-size:15px;font-weight:500}
+body[data-lang="en"] .cd-lbl{font-size:11.5px;letter-spacing:.12em;font-weight:500;color:var(--ink)}
+body[data-lang="en"] .muh-tag{font-size:12px;letter-spacing:.18em;font-weight:500}
+body[data-lang="en"] .muh-sacred{font-size:15.5px;font-weight:500;letter-spacing:.04em;line-height:1.5}
+body[data-lang="en"] .muh-year{font-size:13px;letter-spacing:.18em;font-weight:600}
+body[data-lang="en"] .muh-time{font-size:19px;font-family:var(--serif);font-weight:600}
+body[data-lang="en"] .event .time{font-size:12.5px;letter-spacing:.1em;font-weight:600}
+body[data-lang="en"] .desc{font-size:16.5px;font-family:var(--serif);font-weight:500;font-style:normal;line-height:1.5}
+body[data-lang="en"] .venue-name{font-size:25px;font-weight:500}
+body[data-lang="en"] .venue-addr{font-size:17px;font-family:var(--serif);font-weight:500;font-style:normal}
+body[data-lang="en"] .map-btn{font-size:12.5px;letter-spacing:.16em;font-weight:600}
+body[data-lang="en"] .f-line{font-size:17px;font-weight:500}
+body[data-lang="en"] .f-couple{font-size:21px;font-weight:600}
+body[data-lang="en"] .credits-line{font-weight:500}
+.lang-btn{font-size:11.5px;font-weight:600}
+.lang-btn[data-lang="te"]{font-size:13px}
+
+@media (prefers-reduced-motion:no-preference){
+  /* shimmering gold sheen across the English names */
+  @keyframes nameSheen{0%{background-position:0% 50%}100%{background-position:250% 50%}}
+  body[data-lang="en"] .name-en,body[data-lang="en"] .fam-name-en{
+    background:linear-gradient(100deg,var(--maroon-deep) 35%,#c4923f 50%,var(--maroon-deep) 65%);
+    background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:nameSheen 7s linear infinite}
+  /* letters of English headings gently wave */
+  @keyframes letterWave{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .ch{display:inline-block;animation:letterWave 2.8s ease-in-out infinite;animation-delay:var(--d,0s)}
+  /* diamond ornament pulses */
+  @keyframes diaPulse{0%,100%{box-shadow:0 0 0 2px var(--ivory),0 0 0 3px var(--gold)}50%{box-shadow:0 0 0 2px var(--ivory),0 0 0 3px var(--gold),0 0 14px 4px rgba(230,196,120,.55)}}
+  .divider .dia{animation:diaSpin 6s linear infinite,diaPulse 2.4s ease-in-out infinite}
+  /* event cards lift on tap/hover */
+  .event{transition:transform .35s ease,box-shadow .35s ease}
+  .event:active,.event:hover{transform:translateY(-3px);box-shadow:0 16px 28px rgba(80,40,10,.16)}
+  /* save-the-date numbers breathe */
+  @keyframes numBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+  .ss-cell .big{animation:numBreathe 4s ease-in-out infinite}
+  .ss-cell:nth-child(2) .big{animation-delay:-1.3s}
+  .ss-cell:nth-child(3) .big{animation-delay:-2.6s}
+}
 </style>
 </head>
 <body data-lang="te">
@@ -2134,6 +2185,19 @@ body.interactive .music-btn,body.interactive .lang-toggle{display:flex}
    if(g)g.style.transform=`translateY(${(y*0.18).toFixed(1)}px)`;
    if(t)t.style.transform=`translateY(${(y*0.35).toFixed(1)}px)`;};
  window.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(upd);},{passive:true});
+})();
+</script>
+<script>
+/* split English headings into letters for a gentle wave */
+(function(){
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ document.querySelectorAll('.shubhalekha .lang-en,.s-title .lang-en').forEach(el=>{
+   const txt=el.textContent;el.setAttribute('aria-label',txt);
+   el.textContent='';let i=0;
+   for(const ch of txt){const sp=document.createElement('span');sp.className=ch===' '?'':'ch';sp.setAttribute('aria-hidden','true');
+     if(ch===' '){sp.innerHTML='&nbsp;';}else{sp.textContent=ch;sp.style.setProperty('--d',(i*0.08).toFixed(2)+'s');}
+     el.appendChild(sp);i++;}
+ });
 })();
 </script>
 </body>
