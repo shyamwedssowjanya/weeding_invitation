@@ -1956,7 +1956,7 @@ body.interactive .music-btn,body.interactive .lang-toggle{display:flex}
 /* Background music: YouTube player (loops the song); built-in melody as fallback. Starts on a guest gesture. */
 (function(){
  const btn=document.getElementById('musicBtn'),icon=document.getElementById('musicIcon');
- const VIDEO_ID='nA8E41JUQM0';
+ const VIDEO_ID='fIomCq3LTPo';
  const ICON_PLAY='<path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>';
  const ICON_PAUSE='<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
  function ui(on){btn.classList.toggle('playing',on);icon.innerHTML=on?ICON_PAUSE:ICON_PLAY;btn.setAttribute('aria-label',on?'Mute music':'Play music');btn.setAttribute('aria-pressed',String(on));}
